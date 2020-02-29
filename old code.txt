@@ -1,0 +1,103 @@
+const Discord = require("discord.js");
+
+const TOKEN = "Njc0OTc2MjcxNzUwMzk3OTc4.XlfPVg.0fhf8tvhx_-YadoC_hgwgFBv8bc";
+const PREFIX = "^";
+
+
+
+var bot = new Discord.Client();
+var moment = require('moment');
+var randomPuppy = require('random-puppy');
+
+bot.on ("ready", function() {
+    console.log("Ready!");
+
+});
+
+bot.on("message", function(message) {
+    if (message.author.equals(bot.user)) return;
+
+    if (!message.content.startsWith(PREFIX)) return;
+
+    var args = message.content.substring(PREFIX.length).split(" ")
+
+    switch (args[0].toLowerCase()) {
+        case "ping":
+            message.channel.sendMessage("Pong!");
+            break;
+
+        case "help":
+            var help = new Discord.RichEmbed()
+            .setTitle("Help", "Brings up all the commands and what they do")
+            .addField("Help", "Brings you to this page", true)
+            .addField("userinfo (@username)", "Info on another player")
+            .setColor("RED")
+            
+
+        
+
+
+            message.channel.send(help);
+            
+            break;
+
+        case "hello":
+            message.channel.sendMessage("What the fuck do you want from me")
+            break;
+
+        case "userinfo":
+            var user = message.mentions.users.first() || message.author;
+
+            var userInfo = new Discord.RichEmbed()
+
+            .setAuthor(user.tag, user.AvatarURL)
+            .setThumbnail(user.avatarURL)
+            .setColor("RED")
+            .addField("Username:", user.username)
+            .addField("Status:", user.presence.status)
+            .addField("Joined at:", moment(message.guild.members.get(user.id).joinedAt).format("MMMM Do YYYY, h:mm"))
+            .addField("Connections:", user.connections)
+            .addField("User ID:", user.id)
+            message.channel.send(userInfo);
+
+            break;
+
+        case "say":
+            message.delete()
+            var say = new Discord.RichEmbed()
+            .setColor("RED")
+            .setDescription( args.join(" "))
+            message.channel.send({say});
+
+            break; 
+
+
+        case "meme":
+            run async (client, message, args) => {}
+            const subReddits = ["dankmeme", "meme", "me_irl"];
+            const random = subReddits[Math.floor(Math.random() * subReddits.length)];
+            
+
+            const img = await randomPuppy(random);
+            const meme = new RichEmbed()
+            .setColor("RANDOM")
+            .setImage(img)
+            .setTitle(`From /r/${random} `)
+            .setURL(`https://reddit.com/r/${random}`);
+
+            message.channel.send(meme);
+
+
+      
+
+            default:
+                message.channel.sendMessage("Invalid command!")
+            }
+        
+
+    }
+
+    
+)
+
+bot.login(TOKEN)
